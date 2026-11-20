@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Tilda's Workshop Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one column. Today's list first as big colour-coded task cards (each with its own Start/Finish), then the every-day rules and how-tos. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#151a22; --muted:#5a6475; --line:#dde1e8;
+  --print:#1f5fbf; --print-soft:#e5eefc;
+  --ebay:#c25a00; --ebay-soft:#fdeedd;
+  --custom:#7a3fb8; --custom-soft:#f1e8fb;
+  --tidy:#1f7a4a; --tidy-soft:#e3f4ea;
+  --ask:#8a6a00; --ask-soft:#fff5cc;
+  --danger:#b3261e; --danger-soft:#fde7e5;
+  --done:#1f7a4a;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11141a; --surface:#1a1f28; --fg:#eef1f6; --muted:#a0a9b8; --line:#2c3340;
+  --print:#7fb0ff; --print-soft:#1a2a45; --ebay:#ffad66; --ebay-soft:#3a2614; --custom:#c9a2ff; --custom-soft:#2c1f40;
+  --tidy:#6fd59b; --tidy-soft:#16301f; --ask:#ffd84d; --ask-soft:#3a3212; --danger:#ff8b82; --danger-soft:#3d1a18; --done:#6fd59b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11141a; --surface:#1a1f28; --fg:#eef1f6; --muted:#a0a9b8; --line:#2c3340;
+  --print:#7fb0ff; --print-soft:#1a2a45; --ebay:#ffad66; --ebay-soft:#3a2614; --custom:#c9a2ff; --custom-soft:#2c1f40;
+  --tidy:#6fd59b; --tidy-soft:#16301f; --ask:#ffd84d; --ask-soft:#3a3212; --danger:#ff8b82; --danger-soft:#3d1a18; --done:#6fd59b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 72px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:2rem;line-height:1.15}
+h2{font-size:1.45rem;margin-bottom:6px}
+h3{font-size:1.1rem;margin:20px 0 8px}
+p{margin:0 0 10px;max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rule{margin-top:16px;background:var(--danger-soft);border:2px solid var(--danger);border-radius:12px;padding:14px 16px;font-weight:700;color:var(--fg)}
+.rule span{color:var(--danger)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.c-print{--c:var(--print);--cs:var(--print-soft)} .c-ebay{--c:var(--ebay);--cs:var(--ebay-soft)} .c-custom{--c:var(--custom);--cs:var(--custom-soft)}
+.c-tidy{--c:var(--tidy);--cs:var(--tidy-soft)} .c-ask{--c:var(--ask);--cs:var(--ask-soft)} .c-danger{--c:var(--danger);--cs:var(--danger-soft)}
+.pill{color:var(--c);background:var(--cs)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:18px 0 6px;padding-block:8px;display:flex;gap:6px;flex-wrap:wrap}
+nav a{font-size:.85rem;font-weight:600;color:var(--fg);text-decoration:none;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+nav a:focus-visible,nav a:hover{border-color:var(--print);outline:none}
+section{padding-top:24px;scroll-margin-top:64px}
+.sub{color:var(--muted)}
+/* task cards */
+.cards{display:grid;gap:14px;margin-top:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--c);border-radius:12px;padding:14px 16px}
+.card.is-done{opacity:.72}
+.card-head{display:flex;gap:12px;align-items:flex-start}
+.num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:var(--surface);font-family:var(--display);font-weight:700;font-size:1.05rem}
+.card-head .t{min-width:0;flex:1}
+.card h3{margin:2px 0 4px;font-size:1.2rem}
+.steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px}
+.steps li{display:flex;gap:10px;align-items:flex-start}
+.steps input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--c)}
+.steps label{cursor:pointer}
+.tickat{color:var(--muted);font-size:.8rem;font-family:var(--mono);white-space:nowrap}
+.box{margin-top:10px;border-radius:10px;padding:10px 12px;font-weight:600}
+.box .eyebrow{display:block;margin-bottom:2px;color:inherit;opacity:.85}
+.watch{background:var(--danger-soft);color:var(--fg);border:1px solid var(--danger)}
+.watch .eyebrow{color:var(--danger)}
+.askbox{background:var(--ask-soft);color:var(--fg);border:1px solid var(--ask)}
+.askbox .eyebrow{color:var(--ask)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+button{font:inherit;font-weight:700;border-radius:10px;border:1px solid transparent;padding:10px 18px;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--print);outline-offset:2px}
+.start{background:var(--c);color:var(--surface)}
+.finish{background:var(--danger);color:#fff}
+.ghost{background:transparent;border-color:var(--line);color:var(--fg)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.clock{font-family:var(--mono);font-size:1.4rem;font-variant-numeric:tabular-nums;color:var(--c)}
+.donetag{font-weight:700;color:var(--done)}
+textarea,input[type=text]{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
+textarea{min-height:64px;resize:vertical}
+.notewrap{margin-top:10px;display:grid;gap:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.row input{flex:1 1 220px;min-width:0}
+.status{font-size:.9rem;color:var(--muted);margin-top:10px}
+/* every-day */
+ol.how{list-style:none;padding:0;margin:0;display:grid;gap:8px;counter-reset:s}
+ol.how>li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:10px 12px}
+ol.how>li::before{content:counter(s);font-family:var(--mono);font-size:.82rem;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--cs);color:var(--c)}
+ol.how>li>div{min-width:0}
+.why{display:block;color:var(--muted);font-size:.9rem;margin-top:2px}
+.tbc{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:2px}
+.sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:8px}
+.size{background:var(--cs);border-radius:10px;padding:10px 12px}
+.size .n{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.log{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.num2{font-variant-numeric:tabular-nums;white-space:nowrap}
+.value{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:14px;color:var(--muted)}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+
+.nosave{margin-top:12px;padding:14px 16px;border-radius:10px;background:#b91c1c;color:#fff;font-weight:700;font-size:1.05rem;line-height:1.4}
+.nosave span{font-weight:400}
+.who{display:flex;gap:8px;align-items:center;margin:6px 0 10px;font-size:.85rem;color:var(--muted)}
+.who input{width:auto;max-width:180px;padding:5px 9px}
+.saved{color:var(--done);font-weight:600}
+</style>
+</head>
+<body><div class="wrap">
+  <div class="eyebrow">3D Printing Express · Broadstone workshop</div>
+  <div class="who"><label for="who">Your name</label><input type="text" id="who" autocomplete="name"></div>
+  <h1>Tilda's Workshop Handbook</h1>
+
+  <div class="rule"><span>Press Finish the moment each task is done.</span> Not at the end of the day. Every task, straight away.</div>
+
+  <div class="legend" aria-label="Colour key">
+    <span class="pill c-print">Printers and plates</span>
+    <span class="pill c-ebay">eBay</span>
+    <span class="pill c-custom">Customer orders</span>
+    <span class="pill c-tidy">Tidy and bins</span>
+    <span class="pill c-ask">Ask Freddy or James</span>
+    <span class="pill c-danger">Watch out</span>
+  </div>
+
+  <nav aria-label="Sections">
+    <a href="#today">Today's list</a>
+    <a href="#everyday">Every day</a>
+    <a href="#ebay">eBay how-to</a>
+    <a href="#spools">Spools</a>
+    <a href="#times">My times</a>
+    <a href="#values">Our values</a>
+  </nav>
+
+  <section id="today">
+    <div class="eyebrow" id="dayLabel">Today's list</div>
+    <h2>Do these in order</h2>
+    <p class="sub">Press <b>Start</b> on a task, tick the steps as you go, then press <b>Finish</b> as soon as it's done. If something slowed you down, write it in the box: that's what we want to fix.</p>
+    <div class="cards" id="cards"></div>
+    <div class="row">
+      <input type="text" id="otherTask" placeholder="Doing something not on the list? Type it here">
+      <button class="ghost" id="otherBtn" type="button">Start</button>
+    </div>
+    <div class="card c-ask" id="otherRun" hidden>
+      <div class="actions"><b id="otherWhat"></b><span class="clock" id="otherClock">0:00:00</span></div>
+      <div class="notewrap"><label class="eyebrow" for="otherNote">Anything slow, tricky or missing? (optional)</label><textarea id="otherNote"></textarea></div>
+      <div class="actions"><button class="finish" id="otherFinish" type="button">Finish task</button><button class="ghost" id="otherCancel" type="button">Started by mistake</button></div>
+    </div>
+    <div class="status" id="status">Loading today's list...</div>
+    <div id="nosave" hidden class="nosave">Your ticks and times are NOT being saved. <span id="nosaveWhy"></span> Keep going: they will save when the connection comes back. If this stays red, tell James.</div>
+  </section>
+
+  <section id="everyday" class="c-tidy">
+    <h2>Every day</h2>
+    <h3>Your day</h3>
+    <ol class="how">
+      <li><div><b>You start at 9am.</b> First job every day: clear the printers and clean the build plates.</div></li>
+      <li><div>Stuck, or can't find Freddy or James? Message the group chat. We will always answer.</div></li>
+      <li><div>A print has failed? Take a photo and send it to the group chat.</div></li>
+    </ol>
+    <h3>Opening a delivery box</h3>
+    <ol class="how">
+      <li><div>Take everything out and check every corner. Small bags and paperwork hide in the flaps.</div></li>
+      <li><div>Delivery notes and invoices go to James. Never bin paperwork.</div></li>
+      <li><div>Flat-pack the box straight away: open the bottom flaps, cut the tape if needed, fold it flat.</div></li>
+      <li><div>Put the flat box outside.<span class="tbc">where exactly: James to add</span></div></li>
+      <li><div>When you leave, take every flat box to the <b>outside recycling bin</b>.</div></li>
+    </ol>
+    <h3>Unwrapping a spool</h3>
+    <ol class="how">
+      <li><div>The plastic film goes in the <b>silver bin</b>.</div></li>
+      <li><div>If the silver bin is full, empty it into the <b>outside recycling bin</b>, then carry on.</div></li>
+    </ol>
+    <h3>Before you leave</h3>
+    <ol class="how">
+      <li><div><b>Leave every place better than you found it.</b> Sweep the floor and clear the benches.</div></li>
+      <li><div>All flat boxes are in the outside recycling, and the silver bin isn't full.</div></li>
+      <li><div>Every task you did today is Finished on this page, with a note if anything was slow.</div></li>
+    </ol>
+  </section>
+
+  <section id="ebay" class="c-ebay">
+    <h2>eBay how-to</h2>
+    <h3>The eBay SKU board</h3>
+    <ol class="how">
+      <li><div>The SKU board is on the <b>TV</b>. Turn it on by <b>pressing and holding the button on the left side</b>.</div></li>
+      <li><div>Use the mouse to move around the board.</div></li>
+    </ol>
+    <h3>Sorting parts into SKUs</h3>
+    <ol class="how">
+      <li><div><b>Desupport every part first.</b> No part goes into a drawer or envelope with support still on.</div></li>
+      <li><div><b>Update the stock count every time you add parts to a SKU</b>, by the number you added. Do it straight away, not later.<span class="tbc">where the count is kept: James to add</span></div></li>
+      <li><div>Each SKU goes in its own drawer. If the drawer is full, use a <b>packing envelope</b> from the ones on the freezers: one SKU per envelope, with the SKU number written on it.</div></li>
+      <li><div>Put the finished SKU envelopes on the freezer, neatly.</div></li>
+    </ol>
+    <h3>Packing an order</h3>
+    <ol class="how">
+      <li><div>Pack the most overdue order first.</div></li>
+      <li><div>Match the part to the photo on the order. If it doesn't look the same, stop and ask.</div></li>
+      <li><div>Count the parts by hand against "What you get".</div></li>
+      <li><div><b>HOLD</b> (red flag): don't pack it, tell James. <b>CHECK</b> (amber flag): read why, then pack carefully. It means more than one, several parts, look-alike sizes, a left or right part, international, Amazon or Etsy, or several items on one order (one parcel, one label).</div></li>
+      <li><div>Pick the size:
+        <div class="sizes">
+          <div class="size"><b>Large letter</b><div class="n">up to 750 g · 35.3 x 25 x 2.5 cm</div></div>
+          <div class="size"><b>Small parcel</b><div class="n">up to 2 kg · 45 x 35 x 16 cm</div></div>
+        </div><span class="why">Bigger or heavier: stop and ask. There is no Medium.</span></div></li>
+      <li><div>Packing materials and who buys the label.<span class="tbc">James to add</span></div></li>
+    </ol>
+  </section>
+
+  <section id="spools" class="c-print">
+    <h2>Changing spools</h2>
+    <ol class="how">
+      <li><div>Only change spools when Freddy or James has said which filament goes on which printer.</div></li>
+      <li><div>Read the spool label: white PLA and white PETG look the same.</div></li>
+      <li><div>Unload the old filament from the printer's screen before pulling it out.</div></li>
+      <li><div>Unwrap the new spool. The film goes in the silver bin.</div></li>
+      <li><div>Cut the filament end cleanly at an angle and feed it in until the printer grabs it.</div></li>
+      <li><div>Check the printer shows the right material and colour for that slot.<span class="tbc">James to confirm</span></div></li>
+    </ol>
+  </section>
+
+  <section id="times" class="c-print">
+    <h2>My times</h2>
+    <p class="sub">Every task you Finish lands here. James and Freddy see this too.</p>
+    <div class="log"><table id="logTable" hidden>
+      <thead><tr><th>Date</th><th>Task</th><th>Start</th><th>Finish</th><th>Time</th><th>Notes</th></tr></thead>
+      <tbody id="logBody"></tbody></table></div>
+    <p class="status" id="logEmpty">Nothing finished yet.</p>
+  </section>
+
+  <section id="values">
+    <h2>Our values</h2>
+    <div class="value">James is writing these.</div>
+  </section>
+
+  <footer>Stuck on anything: ask Freddy or James. If a step here is wrong or missing, tell us and we'll update it.</footer>
+</div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
